@@ -1,0 +1,22 @@
+server:
+  servlet:
+    context-path: /v1/api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stylego
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+security:
+    jwt:
+      secret: "${SECRET_TOKEN:}"
+      expirationMs: 360000
+
+
+scheduler:
+  deactivate-time: 3600000
