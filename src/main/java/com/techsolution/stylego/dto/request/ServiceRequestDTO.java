@@ -17,4 +17,5 @@ public class ServiceRequestDTO {
     private Timestamp requestDate;
     private Double totalPrice;
     private List<String> services;
+    private String requestStatus;
 }

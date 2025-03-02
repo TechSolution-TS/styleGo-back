@@ -7,6 +7,10 @@ import com.techsolution.stylego.service.BarberService;
 import com.techsolution.stylego.service.RequestedServicesService;
 import com.techsolution.stylego.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +46,10 @@ public class RequestedServicesController {
     }
 
     @GetMapping("user/{userUuid}")
-    public ResponseEntity<ServiceRequestsResponseDTO> searchRequestByUser(@PathVariable String userUuid) {
+    public ResponseEntity<Page<ServiceRequestsResponseDTO>> searchRequestByUser(@PathVariable String userUuid,
+                                                                                @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         userService.searchUserByUuid(userUuid);
-        ServiceRequestsResponseDTO serviceRequestsResponseDTO = requestedServicesService.searchRequestByUserUuid(userUuid);
+        Page<ServiceRequestsResponseDTO> serviceRequestsResponseDTO = requestedServicesService.searchRequestByUserUuid(userUuid, pageable);
 
         return ResponseEntity.ok(serviceRequestsResponseDTO);
     }

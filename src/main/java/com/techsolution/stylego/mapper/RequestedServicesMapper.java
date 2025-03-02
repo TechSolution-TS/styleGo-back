@@ -5,6 +5,7 @@ import com.techsolution.stylego.dto.response.ServicesTableResponseDTO;
 import com.techsolution.stylego.model.RequestedServices;
 import com.techsolution.stylego.model.ServiceRequests;
 import com.techsolution.stylego.model.ServicesTable;
+import com.techsolution.stylego.model.enums.RequestStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class RequestedServicesMapper {
                 .requestDate(serviceRequest.getRequestDate())
                 .totalPrice(serviceRequest.getTotalPrice())
                 .rate(7.0)
+                .requestStatus(RequestStatus.getValueByType(serviceRequest.getRequestStatus()))
                 .services(services)
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.techsolution.stylego.model;
 
 import com.techsolution.stylego.dto.request.ServiceRequestDTO;
+import com.techsolution.stylego.model.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,10 +32,14 @@ public class ServiceRequests {
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
+    @Column(name = "request_status")
+    private String requestStatus;
+
     public ServiceRequests(ServiceRequestDTO serviceRequestDTO) {
         this.barberUuid = serviceRequestDTO.getBarberUuid();
         this.userUuid = serviceRequestDTO.getUserUuid();
         this.requestDate = serviceRequestDTO.getRequestDate();
         this.totalPrice = serviceRequestDTO.getTotalPrice();
+        this.requestStatus = RequestStatus.getType(serviceRequestDTO.getRequestStatus());
     }
 }

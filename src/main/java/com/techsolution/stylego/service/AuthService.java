@@ -1,6 +1,7 @@
 package com.techsolution.stylego.service;
 
 import com.techsolution.stylego.dto.request.AuthRequestDTO;
+import com.techsolution.stylego.dto.response.AuthResponseDTO;
 import com.techsolution.stylego.model.User;
 import com.techsolution.stylego.util.JwtUtil;
 import com.techsolution.stylego.util.Password;
@@ -15,11 +16,11 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
 
-    public String login(AuthRequestDTO authRequest) {
+    public AuthResponseDTO login(AuthRequestDTO authRequest) {
         User user = userService.findByEmailLogin(authRequest.getUsername());
 
         if (Password.verifyPassword(authRequest.getPassword(), user.getPassword())) {
-            return jwtUtil.generateToken(user.getEmail());
+            return new AuthResponseDTO(jwtUtil.generateToken(user.getEmail()), user.getUuid());
         }
 
         return null;

@@ -25,7 +25,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final BarberSavedUserService barberSavedUserService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserDTO userDTO) {
         User user = userService.registerUser(userDTO);
         return ResponseEntity.ok(userMapper.userToResponseDto(user));

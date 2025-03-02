@@ -16,5 +16,6 @@ public class ServiceRequestsResponseDTO {
     private Timestamp requestDate;
     private Double totalPrice;
     private Double rate;
+    private String requestStatus;
     private List<ServicesTableResponseDTO> services;
 }

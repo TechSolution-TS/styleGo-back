@@ -8,6 +8,8 @@ import com.techsolution.stylego.model.ServiceRequests;
 import com.techsolution.stylego.model.ServicesTable;
 import com.techsolution.stylego.repository.RequestedServicesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ public class RequestedServicesService {
 
     @Transactional
     public Boolean createServiceRequest(ServiceRequestDTO serviceRequestDTO) {
-        if(serviceRequestsService.existServiceRequest(serviceRequestDTO.getUserUuid())) {
+        if(!serviceRequestsService.existServiceRequest(serviceRequestDTO.getUserUuid())) {
             return false;
         }
 
@@ -54,12 +56,12 @@ public class RequestedServicesService {
         return listServiceRequestsResponseDTO;
     }
 
-    public ServiceRequestsResponseDTO searchRequestByUserUuid(String userUuid) {
-        ServiceRequests serviceRequest = serviceRequestsService.findByUserUuidVerifyExistence(userUuid);
-        ServiceRequestsResponseDTO serviceRequestsResponseDTO = addServiceRequests(serviceRequest);
-
-        return serviceRequestsResponseDTO;
+    public Page<ServiceRequestsResponseDTO> searchRequestByUserUuid(String userUuid, Pageable pageable) {
+        return serviceRequestsService.findByUserUuidVerifyExistence(userUuid, pageable)
+                .map(serviceRequest -> addServiceRequests(serviceRequest));
     }
+
+
 
     private ServiceRequestsResponseDTO addServiceRequests(ServiceRequests serviceRequest) {
         List<RequestedServices> requestedServices =

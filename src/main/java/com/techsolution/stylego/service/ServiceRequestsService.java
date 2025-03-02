@@ -4,8 +4,11 @@ import com.techsolution.stylego.dto.request.ServiceRequestDTO;
 import com.techsolution.stylego.exception.ServiceNotFoundException;
 import com.techsolution.stylego.exception.UserNotFoundException;
 import com.techsolution.stylego.model.ServiceRequests;
+import com.techsolution.stylego.model.enums.RequestStatus;
 import com.techsolution.stylego.repository.ServiceRequestsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,21 +26,12 @@ public class ServiceRequestsService {
         return serviceRequestsRepository.save(serviceRequests);
     }
 
-    public ServiceRequests findByUserUuid(String userUuid) {
-        return serviceRequestsRepository.findByUserUuid(userUuid)
-                .orElseThrow(() -> new ServiceNotFoundException("Service Not found"));
-    }
-
     public Boolean existServiceRequest(String userUuid) {
-        return serviceRequestsRepository.findByUserUuid(userUuid).isPresent();
+        return serviceRequestsRepository.findByUserUuidAndRequestStatus(userUuid, RequestStatus.IN_PROGRESS.getValue()).isEmpty();
     }
 
-    public ServiceRequests findByUserUuidVerifyExistence(String userUuid) {
-         if(serviceRequestsRepository.findByUserUuid(userUuid).isPresent()) {
-             return serviceRequestsRepository.findByUserUuid(userUuid).get();
-         }
-
-         return new ServiceRequests();
+    public Page<ServiceRequests> findByUserUuidVerifyExistence(String userUuid, Pageable pageable) {
+        return serviceRequestsRepository.findByUserUuid(userUuid, pageable);
     }
 
     public List<ServiceRequests> findByBarberUuid(String barberUuid) {

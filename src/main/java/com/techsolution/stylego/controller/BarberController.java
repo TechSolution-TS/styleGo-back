@@ -27,7 +27,7 @@ public class BarberController {
     private final BarberMapper barberMapper;
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<BarberResponseDTO> registerBarber(@RequestBody BarberRequestDTO barberDTO) {
         Barber barber = barberService.registerBarber(barberDTO);
         UserResponseDTO userResponseDTO = userService.searchUser(barber.getUser().getId());
